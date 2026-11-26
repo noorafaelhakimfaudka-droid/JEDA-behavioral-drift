@@ -182,8 +182,6 @@ function saveStore(){
   if(S.srcMode!=='personal')return;
   try{localStorage.setItem(STORE_KEY,JSON.stringify({E:S.E,usia:S.usia,sex:S.sex,date:S.date}))}catch(e){}
 }
-function gen(end,mode){const E={};for(let i=13;i>=0;i--){const dt=clampD(addD(end,-i)),k=13-i,sh=mode==='shift'?Math.max(0,k-8):mode==='ram'?Math.max(0,k-10)*.35:0,w=Math.sin(k*2.1);
-E[dt]={tanggal:dt,durasi_tidur_jam:+(7.4+w*.25-sh*.55).toFixed(1),durasi_aktif_jam:+(2.8+w*.2-sh*.28).toFixed(1),mobilitas_tempat:Math.max(1,Math.round(4+w*.5-sh*.5)),interaksi_komunikasi:Math.max(2,Math.round(18+w*1.5-sh*2)),refleksi_mandiri:Math.round(7+w*.5+sh*1.6),konteks:inRam(dt)?'Bulan Ramadan':pd(dt).getDay()%6===0?'Akhir Pekan':'Hari Biasa',usia:S.usia,jenis_kelamin:S.sex}}return E}
 const ents=(upto)=>Object.values(S.E).filter(e=>e.tanggal>=MIN&&e.tanggal<=MAX&&(!upto||e.tanggal<=upto)).sort((a,b)=>a.tanggal<b.tanggal?-1:1);
 const nm=s=>/Ritme|Tidur|Istirahat/.test(String(s||''))?'Tidur & Ritme':/Komun|Suara/.test(String(s||''))?'Komunikasi & Suara':/Mobil/.test(String(s||''))?'Mobilitas':'Gerak';
 
@@ -281,11 +279,11 @@ function rHero(V){
   root.style.setProperty('--ac',c1);root.style.setProperty('--ac2',c2);
   root.style.setProperty('--sp',V.status==='Perlu Perhatian'?'3.2s':V.status==='Mulai Bergeser'?'4.8s':V.status==='Jeda'?'9s':'7s');
   updateHeroWave(V.status);
-  const G={Individu:{Stabil:'Pertahankan rutinitas; catatan singkat harian sudah cukup.','Mulai Bergeser':'Perhatikan ritme beberapa hari ke depan dan sesuaikan tempo aktivitas.','Perlu Perhatian':'Pertimbangkan menghubungi pendamping tepercaya atau menjadwalkan konsultasi dengan tenaga profesional.',Jeda:'Belum ada catatan harian tersimpan. Mulai isi Check-in Kilat di sebelah kiri atau pilih salah satu Contoh Preset untuk meninjau simulasi.'},
+  const G={Individu:{Stabil:'Pertahankan rutinitas; catatan singkat harian sudah cukup.','Mulai Bergeser':'Perhatikan ritme beberapa hari ke depan dan sesuaikan tempo aktivitas.','Perlu Perhatian':'Pertimbangkan menghubungi pendamping tepercaya atau menjadwalkan konsultasi dengan tenaga profesional.',Jeda:'Belum ada catatan harian tersimpan. Mulai isi Check-in Kilat di sebelah kiri atau buka tab Contoh Riset untuk meninjau profil evaluasi.'},
   Pendamping:{Stabil:'Tidak perlu tindakan khusus; tetap tersedia bila diminta.','Mulai Bergeser':'Sapa dengan ringan dan tanyakan apakah ada bantuan yang diperlukan.','Perlu Perhatian':'Ajak berbincang secara hangat dan tawarkan menemani ke layanan profesional.',Jeda:'Belum ada catatan harian yang cukup; sistem menahan penilaian secara tenang.'},
   Klinisi:{Stabil:'Pola konsisten dengan baseline individu; tinjauan rutin sesuai jadwal.','Mulai Bergeser':'Pertimbangkan tinjauan lebih awal dan konfirmasi dengan laporan klinis langsung.','Perlu Perhatian':'Pola menyimpang dari baseline; disarankan penilaian klinis langsung. Bukan diagnosis.',Jeda:'Data belum memadai (kurang dari 3 hari); sistem sengaja menahan penilaian.'}};
   const strip=ROLES.map(r=>{const st=V.stR?V.stR[r]:V.abstain?'Jeda':V.p<TH[r][0]?'Stabil':V.p<TH[r][1]?'Mulai Bergeser':'Perlu Perhatian';return `<button type="button" class="${r===S.role?'on':''}" data-r="${r}"><b>${r}</b>${st}</button>`}).join('');
-  const badge=V.riset?'Contoh Data Riset':V.n===0?'Siap Mencatat · 0 hari tercatat':(S.srcMode==='preset'?'Simulasi Contoh · ':'Catatan Pribadi · ')+fmt(V.lastDate)+' · '+V.n+' hari';
+  const badge=V.riset?'Contoh Data Riset':V.n===0?'Siap Mencatat · 0 hari tercatat':'Catatan Pribadi · '+fmt(V.lastDate)+' · '+V.n+' hari';
   const title=V.n===0&&!V.riset?'Mulai Catatan Pertama':lab;
   const subTxt=(V.n>0&&V.n<3&&!V.riset)?`Baru ${V.n} hari tercatat. Tambahkan ${3-V.n} hari lagi agar pola dapat dibaca oleh sistem.`:G[S.role][V.status];
   $('#hero-in').innerHTML=`<span class="pill"><span class="live-dot"></span>${badge}</span><h2 style="margin-top:8px">${title}</h2><p>${subTxt}</p><p style="font-size:12px;opacity:.88">Pembacaan ritme untuk <b>${S.role}</b> (${V.eng}), bukan diagnosis medis.</p><div class="strip">${strip}</div>`;
@@ -547,7 +545,7 @@ const TABS=[['kilat','Check-in Kilat'],['rekap','Rekap 7 Hari'],['impor','Impor'
 const opt=(k,L)=>L.map(x=>`<button type="button" class="chip ${Math.abs(S.q[k]-x[1])<.01?'on':''}" style="--c:#5B64B8" data-k="${k}" data-v="${x[1]}">${x[0]}</button>`).join('');
 function rInp(){$('#tabs').innerHTML=TABS.map(t=>`<button type="button" class="${S.tab===t[0]?'on':''}" data-t="${t[0]}">${t[1]}</button>`).join('');
 $('#tabs').querySelectorAll('button').forEach(b=>b.onclick=()=>{S.tab=b.dataset.t;S.mi=0;renderAll()});
-const dp=`<div class="q"><b>Tanggal (2026-2028)</b><div class="row"><button type="button" class="chip" id="dp">‹</button><input type="date" id="di" min="${MIN}" max="${MAX}" value="${S.date}"><button type="button" class="chip" id="dn">›</button><button type="button" class="chip" id="dt">Hari ini</button></div><div class="row" style="margin-top:8px"><button type="button" class="chip" data-pre="stable">Contoh: Stabil 2026</button><button type="button" class="chip" data-pre="ram">Contoh: Ramadan 2027</button><button type="button" class="chip" data-pre="shift">Contoh: Bergeser 2028</button></div></div>`;
+const dp=`<div class="q"><b>Tanggal (2026-2028)</b><div class="row"><button type="button" class="chip" id="dp">‹</button><input type="date" id="di" min="${MIN}" max="${MAX}" value="${S.date}"><button type="button" class="chip" id="dn">›</button><button type="button" class="chip" id="dt">Hari ini</button></div></div>`;
 const footActs=`<div class="row" style="margin-top:10px;justify-content:space-between"><div class="row"><button type="button" class="chip" id="exCsv">Ekspor CSV</button><button type="button" class="chip" id="exJson">Backup JSON</button></div><button type="button" class="chip" id="clrAll">Mulai Baru</button></div>`;
 let h='';
 if(S.tab==='kilat')h=dp+`<div class="q"><b>1 · Tidur semalam</b><div class="row">${opt('t',[['Kurang dari 5 jam',4.5],['5-6 jam',5.8],['7-8 jam',7.5],['Lebih dari 9 jam',9.3]])}</div></div><div class="q"><b>2 · Gerak hari ini</b><div class="row">${opt('g',[['Ringan',1.1],['Sedang',2.2],['Aktif',3.2]])}</div></div><div class="q"><b>3 · Berkomunikasi</b><div class="row">${opt('s',[['Sedikit',6],['Cukup',15],['Banyak',24]])}</div></div><div class="q"><b>4 · Perasaan hari ini</b><div class="row">${opt('f',[['Tenang',6],['Naik turun',10],['Berat',14]])}</div></div>
@@ -559,8 +557,7 @@ $('#inp').innerHTML=h;wire();syncHeight()}
 
 function dl(name,text,mime){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type:mime}));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},200)}
 function wire(){const g=s=>$('#inp').querySelector(s),ga=s=>$('#inp').querySelectorAll(s);
-if(g('#di')){g('#di').onchange=e=>e.target.value&&setDate(e.target.value);g('#dp').onclick=()=>setDate(addD(S.date,-1));g('#dn').onclick=()=>setDate(addD(S.date,1));g('#dt').onclick=()=>setDate(today);
-ga('[data-pre]').forEach(b=>b.onclick=()=>{const mode=b.dataset.pre,dt=mode==='stable'?'2026-11-26':mode==='ram'?'2027-02-22':'2028-06-14';S.srcMode='preset';S.E=gen(dt,mode);S.hz=14;S.rec=false;setDate(dt);toast(mode==='stable'?'Simulasi Stabil 2026 dimuat':mode==='ram'?'Simulasi Ramadan 2027 dimuat':'Simulasi Bergeser 2028 dimuat')})}
+if(g('#di')){g('#di').onchange=e=>e.target.value&&setDate(e.target.value);g('#dp').onclick=()=>setDate(addD(S.date,-1));g('#dn').onclick=()=>setDate(addD(S.date,1));g('#dt').onclick=()=>setDate(today)}
 ga('[data-k]').forEach(b=>b.onclick=()=>{S.q[b.dataset.k]=+b.dataset.v;rInp()});
 if(g('#det'))g('#det').ontoggle=()=>syncHeight();
 if(g('#sv'))g('#sv').onclick=()=>{const mt=g('#mt');S.srcMode='personal';S.E[S.date]={tanggal:S.date,durasi_tidur_jam:S.q.t,durasi_aktif_jam:S.q.g,mobilitas_tempat:mt?+mt.value:Math.round(S.q.g*1.4),interaksi_komunikasi:S.q.s,refleksi_mandiri:S.q.f,konteks:inRam(S.date)?'Bulan Ramadan':pd(S.date).getDay()%6===0?'Akhir Pekan':'Hari Biasa',usia:S.usia,jenis_kelamin:S.sex};saveStore();toast('Catatan '+fmt(S.date)+' tersimpan');renderAll()};
