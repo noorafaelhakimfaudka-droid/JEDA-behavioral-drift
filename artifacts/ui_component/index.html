@@ -209,7 +209,7 @@ function updateHeroWave(st){
 }
 
 /* ---- skoring lokal & binding LIVE (.joblib) ---- */
-function score(E){const n=E.length,V={n,abstain:n<3,lastDate:n?E[n-1].tanggal:S.date};
+function score(E){const n=E.length,V={n,abstain:n<3,lastDate:n?E[n-1].tanggal:S.date},curSig=n?JSON.stringify({d:S.date,e:E,u:S.usia,x:S.sex}):'';
 const win=E.slice(-7),base=n>=6?E.slice(0,Math.max(3,n-3)).slice(-14):E.slice(0,Math.max(2,Math.ceil(n/2)));
 V.labels=win.map(e=>fmt(e.tanggal).slice(0,6));V.series={};V.chan=[];V.z={};
 CHL.forEach(c=>{const f=CHF[c],bv=base.map(e=>+e[f]||0),mu=bv.length?mean(bv):0,s=Math.max(sd(bv)||0,Math.abs(mu)*.08,.3);
@@ -226,7 +226,7 @@ const sl=E.slice(-7).map(e=>e.durasi_tidur_jam).filter(x=>x!=null),av=sl.length?
 V.kpos=av==null||V.abstain?null:cl(50+(av-m0)/2.8*50,4,96);
 V.shap=n===0?[]:CHL.map(c=>({label:c,shap:+(.3*(Math.min(3.5,V.z[c])-.9)).toFixed(3)})).sort((a,b)=>Math.abs(b.shap)-Math.abs(a.shap));
 V.eng=n===0?'siap-catat':'lokal-preview';
-if(n>0&&LIVE&&LIVE.n===n&&LIVE.lastDate===V.lastDate){
+if(n>0&&LIVE&&LIVE.sig===curSig){
   V.abstain=!!LIVE.abstain;
   ['p','unc','p14','p28'].forEach(k=>{if(LIVE[k]!=null)V[k]=LIVE[k]});
   if(LIVE.status)V.stR=LIVE.status;
@@ -431,7 +431,7 @@ function rKurva(V){
   $('#ks').textContent=l+(V.ks?'. '+V.ks:'. Posisi durasi istirahat pada pita referensi sebaya.');
   $('#agv').textContent=S.usia+' th';$('#ag').value=S.usia;
   $('#sx').innerHTML=['Perempuan','Laki-laki'].map(s=>`<button type="button" class="${S.sex===s?'on':''}" style="--c:#9B5579" data-s="${s}">${s}</button>`).join('');
-  $('#sx').querySelectorAll('button').forEach(b=>b.onclick=()=>{S.sex=b.dataset.s;stampProfile();saveStore();renderAll()});
+  $('#sx').querySelectorAll('button').forEach(b=>b.onclick=()=>{S.sex=b.dataset.s;LIVE=null;stampProfile();saveStore();renderAll()});
 }
 
 /* ---- Jurang Insight: persistent vessels ---- */
@@ -560,12 +560,12 @@ function wire(){const g=s=>$('#inp').querySelector(s),ga=s=>$('#inp').querySelec
 if(g('#di')){g('#di').onchange=e=>e.target.value&&setDate(e.target.value);g('#dp').onclick=()=>setDate(addD(S.date,-1));g('#dn').onclick=()=>setDate(addD(S.date,1));g('#dt').onclick=()=>setDate(today)}
 ga('[data-k]').forEach(b=>b.onclick=()=>{S.q[b.dataset.k]=+b.dataset.v;rInp()});
 if(g('#det'))g('#det').ontoggle=()=>syncHeight();
-if(g('#sv'))g('#sv').onclick=()=>{const mt=g('#mt');S.srcMode='personal';S.E[S.date]={tanggal:S.date,durasi_tidur_jam:S.q.t,durasi_aktif_jam:S.q.g,mobilitas_tempat:mt?+mt.value:Math.round(S.q.g*1.4),interaksi_komunikasi:S.q.s,refleksi_mandiri:S.q.f,konteks:inRam(S.date)?'Bulan Ramadan':pd(S.date).getDay()%6===0?'Akhir Pekan':'Hari Biasa',usia:S.usia,jenis_kelamin:S.sex};saveStore();toast('Catatan '+fmt(S.date)+' tersimpan');renderAll()};
-if(g('#sr'))g('#sr').onclick=()=>{const t={};ga('[data-r]').forEach(i=>{(t[i.dataset.r]=t[i.dataset.r]||{})[i.dataset.f]=+i.value});S.srcMode='personal';Object.keys(t).forEach(k=>{const dt=clampD(addD(S.date,-k));S.E[dt]=Object.assign({tanggal:dt,refleksi_mandiri:8,konteks:inRam(dt)?'Bulan Ramadan':pd(dt).getDay()%6===0?'Akhir Pekan':'Hari Biasa',usia:S.usia,jenis_kelamin:S.sex},S.E[dt]||{},t[k])});saveStore();toast('7 hari diterapkan');renderAll()};
+if(g('#sv'))g('#sv').onclick=()=>{const mt=g('#mt');S.srcMode='personal';LIVE=null;S.E[S.date]={tanggal:S.date,durasi_tidur_jam:S.q.t,durasi_aktif_jam:S.q.g,mobilitas_tempat:mt?+mt.value:Math.round(S.q.g*1.4),interaksi_komunikasi:S.q.s,refleksi_mandiri:S.q.f,konteks:inRam(S.date)?'Bulan Ramadan':pd(S.date).getDay()%6===0?'Akhir Pekan':'Hari Biasa',usia:S.usia,jenis_kelamin:S.sex};saveStore();toast('Catatan '+fmt(S.date)+' tersimpan');renderAll()};
+if(g('#sr'))g('#sr').onclick=()=>{const t={};ga('[data-r]').forEach(i=>{(t[i.dataset.r]=t[i.dataset.r]||{})[i.dataset.f]=+i.value});S.srcMode='personal';LIVE=null;Object.keys(t).forEach(k=>{const dt=clampD(addD(S.date,-k));S.E[dt]=Object.assign({tanggal:dt,refleksi_mandiri:8,konteks:inRam(dt)?'Bulan Ramadan':pd(dt).getDay()%6===0?'Akhir Pekan':'Hari Biasa',usia:S.usia,jenis_kelamin:S.sex},S.E[dt]||{},t[k])});saveStore();toast('7 hari diterapkan');renderAll()};
 if(g('#tpl'))g('#tpl').onclick=()=>{g('#ta').value=D.user_csv_template||'tanggal,durasi_tidur_jam,durasi_aktif_jam,mobilitas_tempat,interaksi_komunikasi,refleksi_mandiri,konteks,usia,jenis_kelamin\n2026-11-24,7.2,2.6,4,17,7,Hari Biasa,27,Perempuan';toast('Templat dimuat ke kolom teks')};
 if(g('#fl'))g('#fl').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{g('#ta').value=r.result;toast('Berkas dibaca, klik Impor data')};r.readAsText(f)};
 if(g('#im'))g('#im').onclick=()=>{const t=g('#ta').value.trim();if(!t){toast('Isi atau pilih berkas CSV/JSON dahulu');return}let n=0;try{let rows;if(t[0]==='['||t[0]==='{'){const j=JSON.parse(t);rows=Array.isArray(j)?j:(j.entries||[])}else{const L=t.split(/\r?\n/),H=L[0].split(',').map(x=>x.trim());rows=L.slice(1).filter(Boolean).map(l=>{const c=l.split(','),o={};H.forEach((k,i)=>o[k]=c[i]);return o})}
-S.srcMode='personal';rows.forEach(r=>{const dt=String(r.tanggal||r.date||'').slice(0,10);if(!/^\d{4}-\d\d-\d\d$/.test(dt)||dt<MIN||dt>MAX)return;const N=k=>r[k]===''||r[k]==null?null:+r[k];const row={tanggal:dt,durasi_tidur_jam:N('durasi_tidur_jam'),durasi_aktif_jam:N('durasi_aktif_jam'),mobilitas_tempat:N('mobilitas_tempat'),interaksi_komunikasi:N('interaksi_komunikasi'),refleksi_mandiri:N('refleksi_mandiri'),konteks:r.konteks||'Hari Biasa',usia:+r.usia||S.usia,jenis_kelamin:r.jenis_kelamin||S.sex};
+S.srcMode='personal';LIVE=null;rows.forEach(r=>{const dt=String(r.tanggal||r.date||'').slice(0,10);if(!/^\d{4}-\d\d-\d\d$/.test(dt)||dt<MIN||dt>MAX)return;const N=k=>r[k]===''||r[k]==null?null:+r[k];const row={tanggal:dt,durasi_tidur_jam:N('durasi_tidur_jam'),durasi_aktif_jam:N('durasi_aktif_jam'),mobilitas_tempat:N('mobilitas_tempat'),interaksi_komunikasi:N('interaksi_komunikasi'),refleksi_mandiri:N('refleksi_mandiri'),konteks:r.konteks||'Hari Biasa',usia:+r.usia||S.usia,jenis_kelamin:r.jenis_kelamin||S.sex};
 ['buka_layar_malam','aktivitas_malam','mobilitas_jarak_km','panggilan_terlewat','interaksi_suara_menit'].forEach(k=>{const v=N(k);if(v!=null&&!Number.isNaN(v))row[k]=v});
 S.E[dt]=row;n++});
 if(n){const l=Object.keys(S.E).sort().pop();saveStore();toast(n+' hari diimpor');setDate(l)}else toast('Tidak ada baris valid pada rentang 2026-2028')}catch(x){toast('Format CSV/JSON tidak dikenali')}};
@@ -580,22 +580,22 @@ if(g('#rwn'))g('#rwn').onclick=()=>{const R=S.rsInfo.R;if(S.rs.w<R.length-1){S.r
 
 $('#hz').oninput=e=>{S.hz=+e.target.value;rWaktu(curV())};
 $('#rec').onclick=()=>{S.rec=!S.rec;rWaktu(curV())};
-$('#ag').oninput=e=>{S.usia=+e.target.value;stampProfile();rKurva(curV())};
+$('#ag').oninput=e=>{S.usia=+e.target.value;LIVE=null;stampProfile();rKurva(curV())};
 $('#ag').onchange=()=>{saveStore();sendLive()};
-$('#agm').onclick=()=>{S.usia=cl(S.usia-1,16,80);stampProfile();saveStore();renderViz();sendLive()};
-$('#agp').onclick=()=>{S.usia=cl(S.usia+1,16,80);stampProfile();saveStore();renderViz();sendLive()};
+$('#agm').onclick=()=>{S.usia=cl(S.usia-1,16,80);LIVE=null;stampProfile();saveStore();renderViz();sendLive()};
+$('#agp').onclick=()=>{S.usia=cl(S.usia+1,16,80);LIVE=null;stampProfile();saveStore();renderViz();sendLive()};
 
 function sendLive(){
   clearTimeout(liveTm);
   if(!isSt||S.tab==='riset')return;
   const sliced=ents(S.date);
   if(!sliced.length){
-    if(LAST!=='EMPTY'){LAST='EMPTY';SEQ++;post('streamlit:setComponentValue',{dataType:'json',value:{req_id:SEQ,entries:[],profile:{usia:S.usia,jenis_kelamin:S.sex,target_date:S.date}}})}
+    if(LAST!=='EMPTY'){LAST='EMPTY';const rid=Date.now()*1000+(++SEQ);post('streamlit:setComponentValue',{dataType:'json',value:{req_id:rid,sig:'',entries:[],profile:{usia:S.usia,jenis_kelamin:S.sex,target_date:S.date}}})}
     return;
   }
   const s=JSON.stringify({d:S.date,e:sliced,u:S.usia,x:S.sex});
   if(s===LAST)return;
-  liveTm=setTimeout(()=>{LAST=s;SEQ++;post('streamlit:setComponentValue',{dataType:'json',value:{req_id:SEQ,entries:sliced,profile:{usia:S.usia,jenis_kelamin:S.sex,target_date:S.date}}})},180);
+  liveTm=setTimeout(()=>{LAST=s;const rid=Date.now()*1000+(++SEQ);post('streamlit:setComponentValue',{dataType:'json',value:{req_id:rid,sig:s,entries:sliced,profile:{usia:S.usia,jenis_kelamin:S.sex,target_date:S.date}}})},180);
 }
 function renderViz(){const V=curV();rRoles();rHero(V);rWaktu(V);rCermin(V);rKurva(V);rJurang(V);rPem(V);rIncon(V);rSem(V);rDS(V);rCal();$('#hz').value=S.hz;$('#ag').value=S.usia;syncHeight()}
 function renderAll(){renderViz();rInp();sendLive()}

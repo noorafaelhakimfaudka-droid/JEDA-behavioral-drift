@@ -64,10 +64,13 @@ def main():
             if len(entries) == 0:
                 st.session_state["jeda_scored_result"] = None
             else:
-                st.session_state["jeda_scored_result"] = score_user_timeline(
+                res = score_user_timeline(
                     entries,
                     comp_event.get("profile") or {},
                 )
+                res["req_id"] = req_id
+                res["sig"] = str(comp_event.get("sig") or "")
+                st.session_state["jeda_scored_result"] = res
             st.rerun()
 
 

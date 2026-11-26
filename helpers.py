@@ -391,9 +391,9 @@ def score_user_timeline(entries: list[dict[str, Any]], profile_meta: dict[str, A
         waktu_txt = "Kecenderungan ritme 2-4 minggu ke depan terlihat relatif stabil."
 
     # Cermin & Pemicu & Inkonsistensi (multi-kanal untuk visualisasi interaktif)
-    valid_pts = feat["cermin_shift_7d"].iloc[2:].dropna() if n >= 3 else pd.Series([], dtype=float)
-    tail_idx = valid_pts.tail(10).index
-    pts = [round(float(x), 3) for x in valid_pts.tail(10).tolist()]
+    valid_pts = feat["cermin_shift_score"].fillna(0.0).tail(10) if n >= 3 else pd.Series([], dtype=float)
+    tail_idx = valid_pts.index
+    pts = [round(float(x), 3) for x in valid_pts.tolist()]
     labels = [str(df.loc[idx, "tanggal"])[:10] for idx in tail_idx]
     channel_series = {
         "Tidur & Ritme": [round(float(abs(feat.loc[idx, "z_causal_ch_ritme_sleep_duration"])) if pd.notna(feat.loc[idx, "z_causal_ch_ritme_sleep_duration"]) else 0.0, 3) for idx in tail_idx],
