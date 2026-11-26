@@ -28,7 +28,7 @@ def main():
     st.markdown(
         """
         <style>
-        #MainMenu, footer, header[data-testid="stHeader"] {display: none;}
+        #MainMenu, footer, header[data-testid="stHeader"], [data-testid="stStatusWidget"] {display: none !important;}
         .stApp {background-color: #F8F5F2;}
         .block-container {
             padding-top: 0rem !important;
@@ -36,6 +36,10 @@ def main():
             padding-left: 0rem !important;
             padding-right: 0rem !important;
             max-width: 100% !important;
+        }
+        [data-stale="true"], .stCustomComponentV1, iframe[title*="jeda_ui"] {
+            opacity: 1 !important;
+            transition: none !important;
         }
         iframe[title*="jeda_ui"], .stCustomComponentV1 {
             border: none;
@@ -53,7 +57,7 @@ def main():
     comp_event = _jeda_component(
         scored_result=scored,
         key="jeda_main_ui",
-        height=1180,
+        height=1920,
     )
 
     if isinstance(comp_event, dict) and "entries" in comp_event:

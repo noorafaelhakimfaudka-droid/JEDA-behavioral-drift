@@ -139,10 +139,10 @@ table{border-collapse:collapse;width:100%;font-size:12px}td,th{padding:6px;borde
 (function(){"use strict";
 const $=s=>document.querySelector(s),p2=n=>String(n).padStart(2,'0');
 let D=window.__JEDA_DATA__||{"config":{"alert_roles":["Individu","Pendamping","Klinisi"]},"profiles":[],"rows":[],"messages":[],"metrics_registry":[],"user_csv_template":""};
-let LIVE=null,SEQ=0,LAST="",lastH=0,liveTm=0;
+let LIVE=null,SEQ=0,LAST="",lastH=0,liveTm=0,hRaf=0;
 const isSt=window.parent&&window.parent!==window;
 const post=(t,x)=>{if(isSt)window.parent.postMessage(Object.assign({isStreamlitMessage:true,type:t},x||{}),"*")};
-function syncHeight(){if(!isSt)return;const w=$('.wrap');if(!w)return;const h=Math.ceil(w.getBoundingClientRect().height)+28;if(Math.abs(h-lastH)<6)return;lastH=h;post('streamlit:setFrameHeight',{height:h})}
+function syncHeight(){if(!isSt)return;cancelAnimationFrame(hRaf);hRaf=requestAnimationFrame(()=>{const w=$('.wrap');if(!w)return;const h=Math.ceil(w.getBoundingClientRect().height)+28;if(Math.abs(h-lastH)<6)return;lastH=h;post('streamlit:setFrameHeight',{height:h})})}
 const STORE_KEY='jeda.v6';
 const ST={'Stabil':['#3D7A5E','#8FCDB0','Ritme Stabil'],'Mulai Bergeser':['#C98225','#F2CE7C','Mulai Bergeser'],'Perlu Perhatian':['#C45E45','#F0A98F','Perlu Perhatian'],'Jeda':['#6B778D','#B4BED0','Jeda']};
 const CHN={'Tidur & Ritme':'#5B64B8','Gerak':'#3C8966','Mobilitas':'#24818C','Komunikasi & Suara':'#CE8024'};
@@ -590,7 +590,7 @@ function sendLive(){
   if(!isSt||S.tab==='riset')return;
   const sliced=ents(S.date);
   if(!sliced.length){
-    if(LAST!=='EMPTY'){LAST='EMPTY';const rid=Date.now()*1000+(++SEQ);post('streamlit:setComponentValue',{dataType:'json',value:{req_id:rid,sig:'',entries:[],profile:{usia:S.usia,jenis_kelamin:S.sex,target_date:S.date}}})}
+    if(LAST&&LAST!=='EMPTY'){LAST='EMPTY';const rid=Date.now()*1000+(++SEQ);post('streamlit:setComponentValue',{dataType:'json',value:{req_id:rid,sig:'',entries:[],profile:{usia:S.usia,jenis_kelamin:S.sex,target_date:S.date}}})}
     return;
   }
   const s=JSON.stringify({d:S.date,e:sliced,u:S.usia,x:S.sex});
@@ -601,7 +601,7 @@ function renderViz(){const V=curV();rRoles();rHero(V);rWaktu(V);rCermin(V);rKurv
 function renderAll(){renderViz();rInp();sendLive()}
 
 initWaktu();initCermin();initJurang();initRadar();
-window.addEventListener('message',ev=>{if(!ev.data||ev.data.type!=='streamlit:render')return;const a=ev.data.args||{};if(a.scored_result!==undefined){LIVE=a.scored_result;renderViz()}syncHeight()});
+window.addEventListener('message',ev=>{if(!ev.data||ev.data.type!=='streamlit:render')return;const a=ev.data.args||{};if(a.scored_result!==undefined){const nextSig=a.scored_result?(a.scored_result.sig||'')+':'+(a.scored_result.req_id||''):'';const prevSig=LIVE?(LIVE.sig||'')+':'+(LIVE.req_id||''):'';if(nextSig!==prevSig){LIVE=a.scored_result;renderViz()}}syncHeight()});
 window.addEventListener('resize',syncHeight);
 if(isSt&&typeof ResizeObserver!=='undefined')new ResizeObserver(syncHeight).observe($('.wrap'));
 post('streamlit:componentReady',{apiVersion:1});
