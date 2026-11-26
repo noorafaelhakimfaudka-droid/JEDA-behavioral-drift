@@ -1,0 +1,305 @@
+{
+  "checked_at_utc": "2026-11-25T14:57:31.644402+00:00",
+  "routing_decision": {
+    "crosscheck_cleaned_has_relapse_or_bprs": false,
+    "status": "PRIMARY_CLEANED_ONLY_NO_RELAPSE_COL_YET_CHECK_BOX_RAW_OR_ACTIVATE_STUDENTLIFE_PROXY",
+    "note": "Berkas cleaned CrossCheck fokus pada sinyal pasif + EMA (tanpa kolom label kambuh/BPRS). Jika berkas mentah Box tidak ditambahkan, jalur fallback resmi StudentLife / CrossCheck EMA-shift (PROXY, Tingkat A) siap dipakai."
+  },
+  "datasets": {
+    "CrossCheck": {
+      "source": "Cornell Tech PBH & CornellPACLab GitHub",
+      "license_terms": "Approved for public use (de-identified smartphone arm); © 2022 PBH Initiative.",
+      "local_disk_mb": 9.34,
+      "schema_summary": {
+        "rows": 5853,
+        "cols": 157,
+        "id_col": "study_id",
+        "unique_subjects": 60,
+        "relapse_or_bprs_cols": [],
+        "ema_cols_sample": [
+          "ema_CALM",
+          "ema_DEPRESSED",
+          "ema_HARM",
+          "ema_HOPEFUL",
+          "ema_SEEING_THINGS",
+          "ema_SLEEPING",
+          "ema_SOCIAL",
+          "ema_STRESSED",
+          "ema_THINK",
+          "ema_VOICES",
+          "ema_neg_score",
+          "ema_pos_score",
+          "ema_resp_time_median",
+          "ema_score"
+        ],
+        "ram_mb": 7.64
+      }
+    },
+    "StudentLife": {
+      "source": "Zenodo 3529253 & CornellPACLab GitHub (portal Dartmouth timeout saat dicek)",
+      "license_terms": "CC-BY-4.0 (Zenodo 3529253); kohort mahasiswa non-klinis; sitasi Wang et al., UbiComp 2014.",
+      "local_disk_mb": 1.39,
+      "schema_summary": {
+        "rows": 1912,
+        "cols": 76,
+        "id_col": "study_id",
+        "unique_subjects": 49,
+        "ema_or_target_cols": [
+          "ema_Mood_happy",
+          "ema_Mood_happyornot",
+          "ema_Mood_sad",
+          "ema_Mood_sadornot",
+          "ema_Social_number",
+          "ema_Stress_level",
+          "ema_Sleep_hour",
+          "ema_Sleep_rate",
+          "ema_Sleep_social",
+          "ema_Behavior_anxious",
+          "ema_Behavior_calm",
+          "ema_Behavior_conventional",
+          "ema_Behavior_critical",
+          "ema_Behavior_dependable",
+          "ema_Behavior_disorganized"
+        ],
+        "ram_mb": 1.24
+      }
+    },
+    "NHANES_2011_2014": {
+      "source": "CDC NCHS (DEMO & PAXDAY) & PhysioNet v1.0.2 (10.13026/d7sw-f662)",
+      "license_terms": "Domain publik CDC/NCHS & CC0 1.0 PhysioNet; khusus wrist-actigraphy.",
+      "local_disk_mb": 21.32,
+      "schema_summary": {
+        "DEMO_G.xpt": {
+          "rows": 9756,
+          "cols": 48,
+          "unique_seqn": 9756,
+          "ram_mb": 3.57
+        },
+        "DEMO_H.xpt": {
+          "rows": 10175,
+          "cols": 47,
+          "unique_seqn": 10175,
+          "ram_mb": 3.65
+        },
+        "PAXDAY_G.xpt": {
+          "rows": 61168,
+          "cols": 15,
+          "unique_seqn": 6917,
+          "ram_mb": 13.36
+        },
+        "PAXDAY_H.xpt": {
+          "rows": 69018,
+          "cols": 15,
+          "unique_seqn": 7776,
+          "ram_mb": 15.07
+        },
+        "physionet_subject_info": {
+          "rows": 19931,
+          "cols": 8,
+          "columns": [
+            "SEQN",
+            "data_release_cycle",
+            "gender",
+            "age_in_years_at_screening",
+            "full_sample_2_year_interview_weight",
+            "full_sample_2_year_mec_exam_weight",
+            "masked_variance_pseudo_psu",
+            "masked_variance_pseudo_stratum"
+          ]
+        }
+      }
+    },
+    "OBF-Psychiatric": {
+      "source": "Zenodo 13754984",
+      "license_terms": "CC-BY-4.0 di Zenodo; tunduk pada aturan terketat Simula (riset/edukasi non-komersial).",
+      "local_disk_mb": 106.74,
+      "schema_summary": {
+        "info_files": {
+          "adhd-info.csv": {
+            "rows": 45,
+            "cols": [
+              "number",
+              "gender",
+              "age",
+              "acc_time",
+              "days",
+              "adhd",
+              "add",
+              "bipolar",
+              "unipolar",
+              "anxiety",
+              "substance",
+              "other",
+              "ct",
+              "mdq_pos",
+              "wurs",
+              "asrs",
+              "madrs",
+              "hads_a",
+              "hads_d",
+              "med"
+            ]
+          },
+          "clinical-info.csv": {
+            "rows": 40,
+            "cols": [
+              "number",
+              "gender",
+              "age",
+              "acc_time",
+              "days",
+              "adhd",
+              "add",
+              "bipolar",
+              "unipolar",
+              "anxiety",
+              "substance",
+              "other",
+              "ct",
+              "mdq_pos",
+              "wurs",
+              "asrs",
+              "madrs",
+              "hads_a",
+              "hads_d",
+              "med"
+            ]
+          },
+          "control-info.csv": {
+            "rows": 32,
+            "cols": [
+              "number",
+              "days",
+              "gender",
+              "age",
+              "acc_time"
+            ]
+          },
+          "depression-info.csv": {
+            "rows": 23,
+            "cols": [
+              "number",
+              "days",
+              "gender",
+              "age",
+              "afftype",
+              "melanch",
+              "inpatient",
+              "marriage",
+              "work",
+              "madrs1",
+              "madrs2",
+              "acc_time",
+              "migraine"
+            ]
+          },
+          "features.csv": {
+            "rows": 897,
+            "cols": [
+              "user",
+              "mean",
+              "sd",
+              "pctZeros",
+              "median",
+              "q25",
+              "q75",
+              "class"
+            ]
+          },
+          "schizophrenia-info.csv": {
+            "rows": 22,
+            "cols": [
+              "number",
+              "gender",
+              "age",
+              "days",
+              "schtype",
+              "migraine",
+              "bprs",
+              "cloz",
+              "antipsych",
+              "moodst",
+              "acc_time"
+            ]
+          }
+        },
+        "csv_count": 168,
+        "group_counts": {
+          "adhd": 45,
+          "clinical": 40,
+          "control": 32,
+          "depression": 23,
+          "schizophrenia": 22
+        }
+      }
+    },
+    "Psykose": {
+      "source": "OSF dgjzu (portal datasets.simula.no kendala SSL lokal)",
+      "license_terms": "CC BY-NC 4.0 (terverifikasi dari license.txt OSF); kontrol terhubung dengan Depresjon.",
+      "local_disk_mb": 0.05,
+      "schema_summary": {
+        "days.csv": {
+          "rows": 54,
+          "cols": [
+            "id",
+            "days"
+          ]
+        },
+        "patients_info.csv": {
+          "rows": 22,
+          "cols": [
+            "number",
+            "gender",
+            "age",
+            "days",
+            "schtype",
+            "bprs",
+            "cloz",
+            "trad",
+            "moodst",
+            "agehosp"
+          ]
+        },
+        "schizophrenia-features.csv": {
+          "rows": 687,
+          "cols": [
+            "userid",
+            "class",
+            "class_str",
+            "f.mean",
+            "f.sd",
+            "f.propZeros"
+          ]
+        }
+      }
+    },
+    "Depresjon": {
+      "source": "Zenodo 1219550 (portal datasets.simula.no kendala SSL lokal)",
+      "license_terms": "CC-BY-NC-4.0 (Zenodo 1219550); sitasi Garcia-Ceja et al., MMSys 2018.",
+      "local_disk_mb": 54.73,
+      "schema_summary": {
+        "csv_count": 56,
+        "group_counts": {
+          "condition": 23,
+          "control": 32
+        },
+        "scores_path": "data\\raw\\depresjon\\extracted\\data\\scores.csv",
+        "scores_rows": 55,
+        "scores_cols": [
+          "number",
+          "days",
+          "gender",
+          "age",
+          "afftype",
+          "melanch",
+          "inpatient",
+          "edu",
+          "marriage",
+          "work",
+          "madrs1",
+          "madrs2"
+        ]
+      }
+    }
+  }
+}

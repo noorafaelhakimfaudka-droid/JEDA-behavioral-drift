@@ -1,0 +1,27 @@
+message_id,pilar,konteks,status_target,pesan
+M01,otonomi,hari_biasa,Stabil,Langkah kecil tetap dapat dipilih sesuai kapasitas energi yang tersedia hari ini.
+M02,otonomi,hari_biasa,Stabil,Ritme harian tidak perlu dipaksakan; penyesuaian tempo aktivitas tetap terbuka kapan saja.
+M03,otonomi,akhir_pekan,Stabil,Akhir pekan dapat dimanfaatkan untuk aktivitas sederhana yang paling menenangkan dan nyaman.
+M04,otonomi,masa_ujian,Stabil,"Di tengah jadwal padat, mengambil jeda singkat sebelum melanjutkan tugas tetap menjadi pilihan yang wajar."
+M05,otonomi,ramadan,Stabil,"Ketika pola harian bergeser selama Ramadan, tempo kegiatan dapat disesuaikan dengan kebutuhan istirahat tubuh."
+M06,otonomi,semua,Mulai Bergeser,"Saat ritme terasa berbeda dari biasanya, memperlambat tempo sejenak merupakan respons yang sehat."
+M07,otonomi,akhir_pekan,Mulai Bergeser,Menyisihkan beberapa menit untuk meninjau kebutuhan prioritas hari ini membantu menjaga keseimbangan.
+M08,kompetensi,hari_biasa,Stabil,Menjaga rutinitas harian yang konsisten sudah merupakan pencapaian kecil yang berarti.
+M09,kompetensi,hari_biasa,Stabil,Menyelesaikan satu tugas sederhana hari ini sudah cukup untuk mempertahankan ritme yang stabil.
+M10,kompetensi,masa_ujian,Stabil,Memusatkan perhatian pada satu bagian kecil terlebih dahulu membantu pikiran tetap teratur saat jadwal padat.
+M11,kompetensi,ramadan,Stabil,Mengenali pola tidur dan aktivitas pribadi membantu pengelolaan energi harian dengan lebih terukur.
+M12,kompetensi,semua,Mulai Bergeser,Mengamati perubahan pola sejak dini memberi ruang lebih longgar untuk merawat rutinitas harian.
+M13,kompetensi,hari_biasa,Mulai Bergeser,Memilih satu kegiatan paling ringan dan realistis dapat membantu menjaga kesinambungan aktivitas hari ini.
+M14,kompetensi,akhir_pekan,Stabil,Waktu istirahat yang teratur berperan penting dalam menjaga kestabilan ritme jangka panjang.
+M15,keterhubungan,hari_biasa,Stabil,Menyapa satu pendamping atau rekan tepercaya hari ini dapat menjaga rasa keterhubungan sosial.
+M16,keterhubungan,akhir_pekan,Stabil,Berbagi cerita ringan bersama keluarga atau teman dekat dapat menghadirkan rasa tenang di akhir pekan.
+M17,keterhubungan,masa_ujian,Stabil,Berbincang singkat dengan lingkungan yang suportif dapat membantu meringankan beban pikiran.
+M18,keterhubungan,ramadan,Stabil,Momen kebersamaan yang tenang bersama pendamping atau keluarga dapat menjadi penopang ritme harian.
+M19,keterhubungan,semua,Mulai Bergeser,"Ketika ritme mulai terasa bergeser, percakapan santai dengan pendamping tepercaya sering kali membantu."
+M20,keterhubungan,semua,Mulai Bergeser,Meminta ditemani atau sekadar bercerita kepada pendamping merupakan langkah wajar kapan pun dibutuhkan.
+M21,gerbang_aman,semua,Perlu Perhatian,Pola aktivitas minggu ini menunjukkan pergeseran yang layak diperhatikan lebih awal. Sebaiknya hubungi pendamping tepercaya atau jadwalkan konsultasi dengan klinisi.
+M22,gerbang_aman,semua,Perlu Perhatian,Beberapa indikator kebiasaan bergerak menjauh dari ritme biasanya. Pertimbangkan untuk memberi kabar kepada pendamping atau berkonsultasi dengan tenaga profesional.
+M23,gerbang_aman,semua,Perlu Perhatian,"Saat pola keseharian terasa lebih berat atau tidak menentu, berdiskusi dengan pendamping maupun klinisi dapat memberikan dukungan yang lebih terarah."
+M24,abstain_aman,semua,Jeda,Data minggu ini belum cukup lengkap atau polanya masih terlalu samar untuk disimpulkan. Pembacaan ditunda hingga data beberapa hari ke depan terkumpul.
+M25,abstain_aman,semua,Jeda,Catatan sinyal beberapa hari terakhir masih terbatas sehingga sistem mengambil jeda. Pemantauan tenang dan komunikasi dengan pendamping tetap dianjurkan bila perlu.
+M26,abstain_aman,semua,Jeda,Kondisi sinyal saat ini belum memungkinkan pembacaan yang meyakinkan. Sistem memilih jeda secara objektif hingga kelengkapan data kembali memadai.

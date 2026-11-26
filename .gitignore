@@ -1,0 +1,36 @@
+# Local study notes (not uploaded to GitHub)
+PANDUAN_LENGKAP_JEDA.md
+
+# Raw & regenerated intermediate datasets (reproducible from notebooks)
+data/raw/*
+!data/raw/.gitkeep
+data/interim/*.parquet
+data/processed/*.parquet
+
+# Virtual environments & local archives
+.venv/
+venv/
+env/
+*.zip
+
+# Python cache & build artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.pytest_cache/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Environment variables, IDE & local secrets
+.env
+.env.local
+.vscode/
+.idea/
+
+# OS & editor files
+.DS_Store
+Thumbs.db
+*.tmp
+*.log

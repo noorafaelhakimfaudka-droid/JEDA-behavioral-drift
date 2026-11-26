@@ -1,0 +1,78 @@
+{
+  "project": {
+    "name": "Jeda",
+    "subtitle": "Early Behavioral Shift Detection for Severe Mental Illness",
+    "mode": "academic_portfolio",
+    "seed": 42,
+    "python_version_target": "3.11",
+    "compute_mode": "cpu",
+    "ram_budget_gb": 8
+  },
+  "paths": {
+    "data_raw": "data/raw",
+    "data_interim": "data/interim",
+    "data_processed": "data/processed",
+    "notebooks": "notebooks",
+    "artifacts_models": "artifacts/models",
+    "artifacts_figures": "artifacts/figures",
+    "app_payload": "artifacts/app_payload.parquet",
+    "libraries": "libraries",
+    "motivation_messages": "libraries/motivation_messages.csv",
+    "reports": "reports",
+    "data_cards": "reports/data_cards"
+  },
+  "modeling_defaults": {
+    "cv_strategy": "GroupKFold_or_StratifiedGroupKFold_by_subject",
+    "shift_horizon_days": 14,
+    "time_horizon_weeks": [2, 4],
+    "abstain_enabled": true,
+    "causal_baseline_only": true,
+    "no_generative_llm": true,
+    "no_clinical_diagnosis": true,
+    "task_spec_frozen_in_nb": "05_data_selection.ipynb"
+  },
+  "claim_tiers": {
+    "tier_a": "Tingkat A (Deskriptif / Simulasi)",
+    "tier_b": "Tingkat B (Eksploratori Out-of-Sample)",
+    "tier_c": "Tingkat C (Validasi Lintas Dataset)",
+    "synthetic_tag": "SYNTHETIC_SMOKE_TEST_ONLY",
+    "proxy_tag": "PROXY"
+  },
+  "alert_roles": [
+    "Individu",
+    "Pendamping",
+    "Klinisi"
+  ],
+  "datasets": {
+    "primary_target": [
+      "CrossCheck"
+    ],
+    "primary_and_official_fallback": [
+      "StudentLife"
+    ],
+    "reference_population": [
+      "NHANES_2011_2014"
+    ],
+    "clinical_validation": [
+      "OBF-Psychiatric",
+      "Psykose",
+      "Depresjon"
+    ],
+    "optional_extension": [
+      "EmoT_IndoNLU",
+      "Dreaddit",
+      "RAVDESS",
+      "CREMA-D"
+    ]
+  },
+  "ui_palette": {
+    "background": "#FAF8F5",
+    "card": "#FFFFFF",
+    "card_border": "#ECE7DF",
+    "stable": "#5F7A61",
+    "shifting": "#D8A35D",
+    "attention": "#C97A63",
+    "abstain": "#8E9599",
+    "text_primary": "#2D3234"
+  }
+}
